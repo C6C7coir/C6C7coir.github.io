@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,600" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/paper.js/0.11.3/paper-full.min.js"></script>
+
+<title>Modern Form</title>
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+font-family:Roboto;
+}
+
+.backRight{
+position:absolute;
+right:0;
+width:50%;
+height:100%;
+background:#03A9F4;
+}
+
+.backLeft{
+position:absolute;
+left:0;
+width:50%;
+height:100%;
+background:#673AB7;
+}
+
+.canvas-back{
+position:absolute;
+width:100%;
+height:100%;
+z-index:-1;
+}
+
+#slideBox{
+width:50%;
+height:100%;
+margin-left:50%;
+position:absolute;
+box-shadow:0 14px 28px rgba(0,0,0,0.25);
+}
+
+.topLayer{
+width:200%;
+height:100%;
+position:relative;
+left:-100%;
+}
+
+.left,.right{
+width:50%;
+height:100%;
+overflow:auto;
+position:absolute;
+}
+
+.left{
+background:#2C3034;
+left:0;
+}
+
+.right{
+right:0;
+background:#f9f9f9;
+}
+
+.content{
+width:80%;
+margin:auto;
+padding-top:40px;
+}
+
+h2{
+font-weight:300;
+font-size:2.5em;
+}
+
+.left h2{color:#03A9F4;}
+.right h2{color:#673AB7;}
+
+label{
+font-size:12px;
+text-transform:uppercase;
+}
+
+input,select{
+width:100%;
+border:none;
+border-bottom:1px solid #ccc;
+padding:8px;
+margin-top:5px;
+background:white;
+color:black;
+}
+
+.left input{
+background:transparent;
+color:white;
+border-bottom:1px solid white;
+}
+
+select{
+color:black;
+background:white;
+}
+
+.form-element{
+margin:18px 0;
+}
+
+button{
+padding:10px 20px;
+border:none;
+cursor:pointer;
+color:white;
+margin-top:10px;
+}
+
+.signup{background:#03A9F4;}
+.login{background:#673AB7;}
+
+.off{
+background:none;
+box-shadow:none;
+color:#03A9F4;
+}
+
+.right .off{color:#673AB7;}
+
+</style>
+</head>
+
+<body>
+
+<div class="backRight"></div>
+<div class="backLeft"></div>
+
+<canvas id="canvas" class="canvas-back"></canvas>
+
+<div id="slideBox">
+<div class="topLayer">
+
+<!-- SIGNUP -->
+
+<div class="left">
+<div class="content">
+
+<h2>Sign Up</h2>
+
+<form>
+
+<div class="form-element">
+<label>First Name</label>
+<input type="text">
+</div>
+
+<div class="form-element">
+<label>Middle Name</label>
+<input type="text">
+</div>
+
+<div class="form-element">
+<label>Last Name</label>
+<input type="text">
+</div>
+
+<div class="form-element">
+<label>Mobile Number</label>
+<input type="tel" placeholder="09XXXXXXXXX">
+</div>
+
+<div class="form-element">
+<label>Region</label>
+<select id="region">
+<option>Select Region</option>
+</select>
+</div>
+
+<div class="form-element">
+<label>City / Municipality</label>
+<select id="city">
+<option>Select City</option>
+</select>
+</div>
+
+<div class="form-element">
+<label>Barangay</label>
+<select id="barangay">
+<option>Select Barangay</option>
+</select>
+</div>
+
+<div class="form-element">
+<label>Email</label>
+<input type="email">
+</div>
+
+<div class="form-element">
+<label>Username</label>
+<input type="text">
+</div>
+
+<div class="form-element">
+<label>Password</label>
+<input type="password">
+</div>
+
+<button class="signup">Sign Up</button>
+<button type="button" id="goLeft" class="off">Log In</button>
+
+</form>
+
+</div>
+</div>
+
+<!-- LOGIN -->
+
+<div class="right">
+<div class="content">
+
+<h2>Login</h2>
+
+<form>
+
+<div class="form-element">
+<label>Username</label>
+<input type="text">
+</div>
+
+<div class="form-element">
+<label>Password</label>
+<input type="password">
+</div>
+
+<button class="login">Login</button>
+<button type="button" id="goRight" class="off">Sign Up</button>
+
+</form>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<script>
+
+/* SLIDE ANIMATION */
+
+$(document).ready(function(){
+
+$('#goRight').click(function(){
+
+$('#slideBox').animate({marginLeft:'0'});
+$('.topLayer').animate({marginLeft:'100%'});
+
+});
+
+$('#goLeft').click(function(){
+
+$('#slideBox').animate({marginLeft:'50%'});
+$('.topLayer').animate({marginLeft:'0'});
+
+});
+
+});
+
+
+/* PH ADDRESS API */
+
+const region=document.getElementById("region");
+const city=document.getElementById("city");
+const barangay=document.getElementById("barangay");
+
+fetch("https://psgc.gitlab.io/api/regions/")
+.then(res=>res.json())
+.then(data=>{
+data.forEach(r=>{
+region.innerHTML+=`<option value="${r.code}">${r.name}</option>`;
+});
+});
+
+region.addEventListener("change",function(){
+
+city.innerHTML="<option>Select City</option>";
+barangay.innerHTML="<option>Select Barangay</option>";
+
+fetch(`https://psgc.gitlab.io/api/regions/${this.value}/cities-municipalities/`)
+.then(res=>res.json())
+.then(data=>{
+data.forEach(c=>{
+city.innerHTML+=`<option value="${c.code}">${c.name}</option>`;
+});
+});
+
+});
+
+city.addEventListener("change",function(){
+
+barangay.innerHTML="<option>Select Barangay</option>";
+
+fetch(`https://psgc.gitlab.io/api/cities-municipalities/${this.value}/barangays/`)
+.then(res=>res.json())
+.then(data=>{
+data.forEach(b=>{
+barangay.innerHTML+=`<option value="${b.code}">${b.name}</option>`;
+});
+});
+
+});
+
+
+/* CANVAS ANIMATION */
+
+paper.install(window);
+paper.setup(document.getElementById("canvas"));
+
+var shapeGroup=new Group();
+
+var shapes=[
+'M231,352l445-156L600,0L452,54L331,3L0,48L231,352',
+'M0,0l64,219L29,343l535,30L478,37l-133,4L0,0z',
+'M0,65l16,138l96,107l270-2L470,0L337,4L0,65z'
+];
+
+for(let i=0;i<shapes.length;i++){
+
+let path=new Path({
+strokeColor:'rgba(255,255,255,0.5)',
+strokeWidth:2
+});
+
+path.pathData=shapes[i];
+path.scale(2);
+path.position=new Point(Math.random()*view.size.width,Math.random()*view.size.height);
+
+shapeGroup.addChild(path);
+
+}
+
+view.onFrame=function(event){
+
+for(let i=0;i<shapeGroup.children.length;i++){
+
+if(i%2===0){
+shapeGroup.children[i].rotate(0.2);
+}else{
+shapeGroup.children[i].rotate(-0.2);
+}
+
+}
+
+};
+
+</script>
+
+</body>
+</html>
+```
