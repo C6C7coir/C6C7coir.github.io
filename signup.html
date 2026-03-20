@@ -37,7 +37,6 @@
         .form-group { flex: 1; margin-bottom: 15px; }
         .form-group label { display: block; color: #1b5e4a; font-weight: 600; margin-bottom: 6px; font-size: 0.85rem; }
         
-        /* Dropdown & Input Styling with Hover Effect */
         .form-group input, .form-group select {
             width: 100%; padding: 12px 14px; border: 2px solid #f0f2f5;
             border-radius: 12px; font-size: 0.9rem; background-color: #f9fafb;
@@ -45,7 +44,6 @@
             cursor: pointer;
         }
 
-        /* NEW: Hover Effect for Dropdowns and Inputs */
         .form-group input:hover, .form-group select:hover {
             border-color: #4ade80;
             background-color: #ffffff;
@@ -61,45 +59,40 @@
 
         .optional-badge { font-weight: normal; color: #9ca3af; font-size: 0.75rem; margin-left: 4px; }
 
-        /* Strength UI */
-        /* Container starts as invisible and slightly lower for a "slide-up" effect */
-/* Container starts with no height and no margin */
-.strength-container {
-    max-height: 0;
-    margin-top: 0;
-    opacity: 0;
-    overflow: hidden; /* Ensures content doesn't bleed out while height is 0 */
-    transition: all 0.3s ease-out;
-    pointer-events: none;
-}
+        .strength-container {
+            max-height: 0;
+            margin-top: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s ease-out;
+            pointer-events: none;
+        }
 
-/* When visible, we give it height and margin back */
-.strength-container.visible {
-    max-height: 60px; /* Enough to fit the bar and text */
-    margin-top: 8px;
-    opacity: 0.7; /* Your requested transparency */
-    pointer-events: auto;
-}
+        .strength-container.visible {
+            max-height: 60px;
+            margin-top: 8px;
+            opacity: 0.7;
+            pointer-events: auto;
+        }
 
+        .strength-meter {
+            height: 6px;
+            background: #eee;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 4px;
+        }
 
-.strength-meter {
-    height: 6px;
-    background: #eee;
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 4px;
-}
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease, background-color 0.4s ease;
+        }
 
-.strength-bar {
-    height: 100%;
-    width: 0%;
-    transition: width 0.4s ease, background-color 0.4s ease;
-}
-
-#strength-text {
-    font-size: 0.75rem;
-    font-weight: 600;
-}
+        #strength-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
 
         .signup-btn {
             width: 100%; padding: 16px; margin-top: 10px;
@@ -109,6 +102,7 @@
             transition: transform 0.2s;
         }
         .signup-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(27, 94, 74, 0.2); }
+        .signup-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
 
         .msg { padding: 10px; border-radius: 8px; text-align: center; font-size: 0.85rem; margin-bottom: 15px; }
         .msg-error { background: #fef2f2; color: #ef4444; border: 1px solid #fee2e2; }
@@ -118,50 +112,38 @@
         .login-link a { color: #4ade80; text-decoration: none; font-weight: 700; }
 
         .form-group select {
-        cursor: pointer;
-        appearance: none; /* Removes default arrow to allow custom styling if needed */
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231b5e4a' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 15px center;
-        background-size: 12px;
-    }
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231b5e4a' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 12px;
+        }
 
-    /* The "Tile" Hover/Focus effect */
-    .form-group select:hover {
-        border-color: #4ade80;
-        background-color: #ffffff;
-        box-shadow: 0 4px 12px rgba(74, 222, 128, 0.15);
-        transform: translateY(-2px);
-    }
+        .form-group select:hover {
+            border-color: #4ade80;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(74, 222, 128, 0.15);
+            transform: translateY(-2px);
+        }
 
-    /* styling the internal options (Limited by Browser) */
-    .form-group select option {
-        padding: 12px;
-        background-color: #ffffff;
-        color: #1b5e4a;
-        font-size: 0.95rem;
-    }
+        .form-group select option {
+            padding: 12px;
+            background-color: #ffffff;
+            color: #1b5e4a;
+            font-size: 0.95rem;
+        }
 
-    /* This targets the 'active' tile in many modern browsers */
-    .form-group select option:hover,
-    .form-group select option:focus,
-    .form-group select option:checked {
-        background-color: #4ade80 !important;
-        color: #ffffff !important;
-        box-shadow: 0 0 10px 100px #4ade80 inset; /* Force color on some browsers */
-    }
-
-    /* Animation for the container when you click */
-    .form-group select:active {
-        transform: scale(0.98);
-    }
+        .form-group select:active { transform: scale(0.98); }
+        
+        .loading { opacity: 0.6; pointer-events: none; }
     </style>
 </head>
 <body>
 
 <div class="signup-container">
     <div class="logo-section">
-        <img src="images/c6c7.jpg" alt="Logo">
+        <img src="c6c7.jpg" alt="Green Husk Collective Logo">
         <p class="tagline">Green Husk Collective</p>
     </div>
 
@@ -185,34 +167,28 @@
 
         <div class="form-group">
             <label>Mobile Number *</label>
-            <input type="text" id="mobile" placeholder="09xxxxxxxxx" required>
+            <input type="tel" id="mobile" placeholder="09xxxxxxxxx" pattern="09[0-9]{9}" required>
         </div>
 
         <div class="form-group">
             <label>Region *</label>
             <select id="region" required>
-                <option value="">Select Region</option>
-                <option value="NCR">NCR (National Capital Region)</option>
-                <option value="CAR">CAR (Cordillera Administrative Region)</option>
-                <option value="Region I">Region I (Ilocos Region)</option>
-                <option value="Region II">Region II (Cagayan Valley)</option>
-                <option value="Region III">Region III (Central Luzon)</option>
-                <option value="Region IV-A">Region IV-A (CALABARZON)</option>
-                <option value="Region V">Region V (Bicol Region)</option>
-                <option value="Region VI">Region VI (Western Visayas)</option>
-                <option value="Region VII">Region VII (Central Visayas)</option>
-                <option value="Region XI">Region XI (Davao Region)</option>
+                <option value="">Loading regions...</option>
             </select>
         </div>
 
         <div class="form-row">
             <div class="form-group">
-                <label>City *</label>
-                <select id="city" disabled required><option value="">Select Region First</option></select>
+                <label>City / Municipality *</label>
+                <select id="city" disabled required>
+                    <option value="">Select region first</option>
+                </select>
             </div>
             <div class="form-group">
                 <label>Barangay *</label>
-                <select id="barangay" disabled required><option value="">Select City First</option></select>
+                <select id="barangay" disabled required>
+                    <option value="">Select city first</option>
+                </select>
             </div>
         </div>
 
@@ -223,16 +199,16 @@
 
         <div class="form-group">
             <label>Username *</label>
-            <input type="text" id="username" placeholder="Username" required>
+            <input type="text" id="username" placeholder="Choose a username" required minlength="3">
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label>Password *</label>
-                <input type="password" id="password" required>
+                <input type="password" id="password" required minlength="8">
                 <div class="strength-container">
                     <div class="strength-meter"><div id="strength-bar" class="strength-bar"></div></div>
-                    <span id="strength-text">Password strength: None</span>
+                    <span id="strength-text"></span>
                 </div>
             </div>
             <div class="form-group">
@@ -241,7 +217,7 @@
             </div>
         </div>
 
-        <button type="submit" class="signup-btn">Create Account</button>
+        <button type="submit" class="signup-btn" id="submit-btn">Create Account</button>
     </form>
 
     <div class="login-link">
@@ -249,166 +225,218 @@
     </div>
 </div>
 
-<script src="app.js"></script>
-<script src="app.js"></script>
 <script>
-    // 1. Data Object (Comprehensive Regions)
-    const regionData = {
-        'NCR': { 
-            'Manila': ['Binondo', 'Malate', 'Ermita', 'Tondo', 'Sampaloc'], 
-            'Quezon City': ['Novaliches', 'Commonwealth', 'Batasan Hills', 'Cubao'], 
-            'Makati': ['Bel-Air', 'Poblacion', 'San Lorenzo', 'Guadalupe Nuevo'],
-            'Taguig': ['BGC', 'Fort Bonifacio', 'Ususan', 'Pinagsama'],
-            'Pasig': ['San Antonio', 'Ugong', 'Kapitolyo', 'Caniogan']
+/* ======================
+   PSGC API INTEGRATION
+   ====================== */
+
+const regionSelect = document.getElementById('region');
+const citySelect = document.getElementById('city');
+const barangaySelect = document.getElementById('barangay');
+
+async function safeFetch(url) {
+    try {
+        const response = await fetch(url.trim());
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        console.error('API Error:', error);
+        throw error;
+    }
+}
+
+function setLoading(selectEl, message) {
+    selectEl.innerHTML = `<option value="">${message}</option>`;
+    selectEl.disabled = true;
+}
+
+function setOptions(selectEl, data, placeholder, valueKey = 'code', labelKey = 'name') {
+    selectEl.innerHTML = `<option value="">${placeholder}</option>`;
+    const sorted = [...data].sort((a, b) => a[labelKey].localeCompare(b[labelKey]));
+    sorted.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item[valueKey];
+        option.textContent = item[labelKey];
+        selectEl.appendChild(option);
+    });
+    selectEl.disabled = false;
+}
+
+(async function loadRegions() {
+    setLoading(regionSelect, 'Loading regions...');
+    try {
+        const regions = await safeFetch('https://psgc.gitlab.io/api/regions/');
+        setOptions(regionSelect, regions, 'Select Region');
+    } catch (err) {
+        setLoading(regionSelect, 'Failed to load regions');
+        showMessage('Unable to load location data. Please check your connection.', 'error');
+    }
+})();
+
+regionSelect.addEventListener('change', async function() {
+    const regionCode = this.value;
+    setLoading(citySelect, 'Loading cities...');
+    setLoading(barangaySelect, 'Select city first');
+    if (!regionCode) return;
+    try {
+        const cities = await safeFetch(
+            `https://psgc.gitlab.io/api/regions/${regionCode}/cities-municipalities/`
+        );
+        setOptions(citySelect, cities, 'Select City/Municipality');
+    } catch (err) {
+        setLoading(citySelect, 'Failed to load cities');
+    }
+});
+
+citySelect.addEventListener('change', async function() {
+    const cityCode = this.value;
+    setLoading(barangaySelect, 'Loading barangays...');
+    if (!cityCode) return;
+    try {
+        const barangays = await safeFetch(
+            `https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays/`
+        );
+        setOptions(barangaySelect, barangays, 'Select Barangay');
+    } catch (err) {
+        setLoading(barangaySelect, 'Failed to load barangays');
+    }
+});
+
+/* ======================
+   PASSWORD STRENGTH METER
+   ====================== */
+
+const passwordInput = document.getElementById('password');
+const strengthBar = document.getElementById('strength-bar');
+const strengthText = document.getElementById('strength-text');
+const strengthContainer = document.querySelector('.strength-container');
+
+passwordInput.addEventListener('input', function() {
+    const val = this.value;
+    if (val.length > 0) {
+        strengthContainer.classList.add('visible');
+    } else {
+        strengthContainer.classList.remove('visible');
+        strengthBar.style.width = '0%';
+        strengthText.textContent = '';
+        return;
+    }
+
+    let score = 0;
+    if (val.length >= 8) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+
+    const colors = ['#ef4444', '#f59e0b', '#84cc16', '#22c55e'];
+    const labels = ['Weak', 'Fair', 'Good', 'Strong'];
+    
+    strengthBar.style.width = `${score * 25}%`;
+    strengthBar.style.backgroundColor = colors[score - 1] || '#eee';
+    strengthText.textContent = score > 0 ? `Strength: ${labels[score - 1]}` : '';
+    strengthText.style.color = score > 0 ? colors[score - 1] : '#9ca3af';
+});
+
+/* ======================
+   FORM SUBMISSION & UTILS
+   ====================== */
+
+const form = document.getElementById('signup-form');
+const messageContainer = document.getElementById('message-container');
+const submitBtn = document.getElementById('submit-btn');
+
+function showMessage(text, type) {
+    messageContainer.innerHTML = `<div class="msg msg-${type}">${text}</div>`;
+    if (type === 'success') {
+        setTimeout(() => { messageContainer.innerHTML = ''; }, 3000);
+    }
+}
+
+function validateForm() {
+    const pass = document.getElementById('password').value;
+    const confirm = document.getElementById('confirm-password').value;
+    
+    if (pass !== confirm) {
+        showMessage('Passwords do not match!', 'error');
+        return false;
+    }
+    if (pass.length < 8) {
+        showMessage('Password must be at least 8 characters.', 'error');
+        return false;
+    }
+    const mobile = document.getElementById('mobile').value;
+    if (!/^09[0-9]{9}$/.test(mobile)) {
+        showMessage('Please enter a valid Philippine mobile number (09xxxxxxxxx).', 'error');
+        return false;
+    }
+    return true;
+}
+
+form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    if (!validateForm()) return;
+    
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Creating Account...';
+    
+    const firstName = document.getElementById('first-name').value.trim();
+    const middleName = document.getElementById('middle-name').value.trim();
+    const lastName = document.getElementById('last-name').value.trim();
+    const fullName = [firstName, middleName, lastName].filter(n => n).join(' ');
+    
+    // ✅ FIXED: Password is now included!
+    const userData = {
+        fullName: fullName,
+        username: document.getElementById('username').value.trim(),
+        email: document.getElementById('email').value.trim().toLowerCase(),
+        password: document.getElementById('password').value, // 🔑 ADDED THIS LINE
+        mobile: document.getElementById('mobile').value,
+        address: {
+            barangay: barangaySelect.value,
+            city: citySelect.value,
+            region: regionSelect.value
         },
-        'CAR': { 
-            'Baguio': ['Irisan', 'Bakakeng', 'Pacdal', 'Gibraltar'], 
-            'Tabuk': ['Dagupan', 'Bulanao', 'Appas'],
-            'Bangued': ['Poblacion', 'Zone 1', 'Zone 5']
-        },
-        'Region I': { 
-            'Laoag': ['Poblacion', 'San Lorenzo', 'Brgy 1', 'Brgy 5'], 
-            'Vigan': ['Ayusan', 'Pagburnayan', 'Pantay Daya'],
-            'Dagupan': ['Tapuac', 'Lucao', 'Pantal'],
-            'San Fernando (LU)': ['Sevilla', 'Poro', 'Lingsat']
-        },
-        'Region II': { 
-            'Tuguegarao': ['Cataggaman', 'Ugac', 'Carig Sur'], 
-            'Santiago': ['Victory', 'Dubinan', 'Plaridel'],
-            'Ilagan': ['Poblacion', 'Guinatan', 'Calamagui']
-        },
-        'Region III': { 
-            'Angeles': ['Balibago', 'Pampang', 'Cutcut', 'Malabanias'], 
-            'San Fernando (P)': ['Dolores', 'Sindalan', 'San Agustin'],
-            'Olongapo': ['Barretto', 'Gordon Heights', 'East Tapinac'],
-            'Malolos': ['Bulihan', 'Longos', 'Dakila']
-        },
-        'Region IV-A': { 
-            'Calamba': ['Canlubang', 'Pansol', 'Real', 'Mayapa'], 
-            'Antipolo': ['Dela Paz', 'San Jose', 'Mambugan'],
-            'Batangas City': ['Alangilan', 'Poblacion', 'Kumintang Ibaba'],
-            'Bacoor': ['Molino', 'San Nicolas', 'Habay']
-        },
-        'Region VII': { 
-            'Cebu City': ['Lahug', 'Mabolo', 'Guadalupe', 'Banilad'], 
-            'Lapu-Lapu': ['Basak', 'Marigondon', 'Pajo'],
-            'Dumaguete': ['Poblacion', 'Daro', 'Banilad'],
-            'Tagbilaran': ['Dao', 'Mansasa', 'Cogon']
-        },
-        'Region XI': { 
-            'Davao City': ['Matina', 'Buhangin', 'Agdao', 'Toril', 'Talomo'], 
-            'Tagum': ['Magugpo', 'Apokon', 'Visayan Village'],
-            'Digos': ['Aplaya', 'Tres de Mayo']
-        }
+        timestamp: new Date().toISOString()
     };
-
-    // 2. Element Selectors
-    const regionSelect = document.getElementById('region');
-    const citySelect = document.getElementById('city');
-    const barangaySelect = document.getElementById('barangay');
-    const passwordInput = document.getElementById('password');
-    const strengthContainer = document.querySelector('.strength-container');
-    const strengthBar = document.getElementById('strength-bar');
-    const strengthText = document.getElementById('strength-text');
-
-    // 3. Address Cascade Logic
-    regionSelect.addEventListener('change', function() {
-        citySelect.innerHTML = '<option value="">Select City</option>';
-        barangaySelect.innerHTML = '<option value="">Select City First</option>';
-        barangaySelect.disabled = true;
+    
+    try {
+        await new Promise(resolve => setTimeout(resolve, 1500));
         
-        if (this.value && regionData[this.value]) {
-            Object.keys(regionData[this.value]).forEach(c => {
-                citySelect.innerHTML += `<option value="${c}">${c}</option>`;
-            });
-            citySelect.disabled = false;
-        } else {
-            citySelect.disabled = true;
-        }
-    });
-
-    citySelect.addEventListener('change', function() {
-        barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
-        const r = regionSelect.value;
-        const c = this.value;
+        const users = JSON.parse(localStorage.getItem('ghc_users') || '[]');
+        users.push({ ...userData, id: Date.now() });
+        localStorage.setItem('ghc_users', JSON.stringify(users));
         
-        if (c && regionData[r][c]) {
-            regionData[r][c].forEach(b => {
-                barangaySelect.innerHTML += `<option value="${b}">${b}</option>`;
-            });
-            barangaySelect.disabled = false;
-        } else {
-            barangaySelect.disabled = true;
-        }
-    });
-
-    // 4. Password Strength & Visibility Toggle
-    passwordInput.addEventListener('input', function() {
-        const val = this.value;
+        // Debug log
+        console.log('User registered:', userData);
+        console.log('All users:', JSON.parse(localStorage.getItem('ghc_users')));
         
-        // Toggle visibility based on text length
-        if (val.length > 0) {
-            strengthContainer.classList.add('visible');
-        } else {
-            strengthContainer.classList.remove('visible');
-        }
-
-        let s = 0;
-        if (val.length >= 8) s++;
-        if (val.match(/[A-Z]/)) s++;
-        if (val.match(/[0-9]/)) s++;
-        if (val.match(/[^a-zA-Z0-9]/)) s++;
+        showMessage('Account created! Please log in to continue.', 'success');
         
-        const colors = ['#ef4444', '#f59e0b', '#84cc16', '#22c55e'];
-        const labels = ['Weak', 'Fair', 'Good', 'Strong'];
+        const userEmail = encodeURIComponent(userData.email);
         
-        strengthBar.style.width = (s * 25) + '%';
-        strengthBar.style.backgroundColor = colors[s-1] || '#eee';
+        setTimeout(() => {
+            window.location.href = `login.html?email=${userEmail}`;
+        }, 2000);
         
-        if (s > 0) {
-            strengthText.textContent = 'Password strength: ' + labels[s-1];
-            strengthText.style.color = colors[s-1];
-        } else {
-            strengthText.textContent = 'Password strength: Too Short';
-            strengthText.style.color = '#9ca3af';
-        }
-    });
+    } catch (error) {
+        console.error('Registration error:', error);
+        showMessage('Registration failed. Please try again.', 'error');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create Account';
+    }
+});
 
-    // 5. Submit Registration
-    document.getElementById('signup-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const msg = document.getElementById('message-container');
-        
-        const pass = document.getElementById('password').value;
-        const confirm = document.getElementById('confirm-password').value;
-
-        if (pass !== confirm) {
-            msg.innerHTML = '<div class="msg msg-error">Passwords do not match!</div>';
-            return;
-        }
-
-        // Clean name logic (handles optional middle name)
-        const firstName = document.getElementById('first-name').value;
-        const middleName = document.getElementById('middle-name').value;
-        const lastName = document.getElementById('last-name').value;
-        const fullName = `${firstName} ${middleName} ${lastName}`.replace(/\s+/g, ' ').trim();
-
-        const user = {
-            fullName: fullName,
-            username: document.getElementById('username').value,
-            email: document.getElementById('email').value,
-            password: pass,
-            mobile: document.getElementById('mobile').value,
-            address: `${barangaySelect.value}, ${citySelect.value}, ${regionSelect.value}`
-        };
-
-        const res = CocoStore.register(user);
-        
-        if (res.ok) {
-            msg.innerHTML = '<div class="msg msg-success">Success! Redirecting...</div>';
-            setTimeout(() => window.location.href = 'storefront.html', 1500);
-        } else {
-            msg.innerHTML = `<div class="msg msg-error">${res.message}</div>`;
-        }
-    });
+document.getElementById('username').addEventListener('blur', async function() {
+    const username = this.value.trim();
+    if (username.length < 3) return;
+    const users = JSON.parse(localStorage.getItem('ghc_users') || '[]');
+    const exists = users.some(u => u.username.toLowerCase() === username.toLowerCase());
+    if (exists) {
+        showMessage('Username is already taken.', 'error');
+    }
+});
 </script>
+
+</body>
+</html>
