@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Green Husk Collective</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3e9f5 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 420px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Logo Styling */
+        .logo-section {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo-section img {
+            max-width: 160px; /* Adjust based on your logo shape */
+            height: auto;
+            margin-bottom: 12px;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+        }
+
+        .tagline {
+            color: #4ade80;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #1b5e4a;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #f0f2f5;
+            border-radius: 14px;
+            font-size: 1rem;
+            background-color: #f9fafb;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4ade80;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(74, 222, 128, 0.15);
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6b7280;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: #1b5e4a;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .forgot-password:hover {
+            color: #4ade80;
+            text-decoration: underline;
+        }
+
+        /* Login Button */
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #1b5e4a 0%, #2d8a6e 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(27, 94, 74, 0.25);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Footer Links */
+        .signup-link {
+            text-align: center;
+            margin-top: 30px;
+            color: #6b7280;
+            font-size: 0.95rem;
+        }
+
+        .signup-link a {
+            color: #4ade80;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Message Box */
+        #message-container {
+            margin-bottom: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .msg {
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .msg-error {
+            background-color: #fef2f2;
+            color: #ef4444;
+            border: 1px solid #fee2e2;
+        }
+
+        .msg-success {
+            background-color: #f0fdf4;
+            color: #22c55e;
+            border: 1px solid #dcfce7;
+        }
+
+        .logo-section img {
+    max-width: 160px;
+    height: auto;
+    margin-bottom: 12px;
+    border-radius: 50%; /* This will make your square JPG look like a circle */
+    object-fit: cover;   /* Ensures the image doesn't stretch */
+}
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="logo-section">
+    <img src="c6c7.jpg" alt="C6C7 Logo">
+    <p class="tagline">Green Husk Collective</p>
+</div>
+
+        <div id="message-container"></div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="login-id">Username or Email</label>
+                <input type="text" id="login-id" placeholder="Enter your credentials" required>
+            </div>
+
+            <div class="form-group">
+                <label for="login-pass">Password</label>
+                <input type="password" id="login-pass" placeholder="••••••••" required>
+            </div>
+
+            <div class="form-options">
+                <label class="remember-me">
+                    <input type="checkbox"> Remember me
+                </label>
+                <a href="#" class="forgot-password">Forgot password?</a>
+            </div>
+
+            <button type="submit" class="login-btn">Log In</button>
+        </form>
+
+        <div class="signup-link">
+            <p>New here? <a href="signup.html">Create an account</a></p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const identifier = document.getElementById('login-id').value;
+            const password = document.getElementById('login-pass').value;
+            const messageBox = document.getElementById('message-container');
+            
+            // Clear previous messages
+            messageBox.innerHTML = '';
+
+            // Call the login function from app.js
+            const result = CocoStore.login(identifier, password);
+            
+            if (result.ok) {
+                // Show success message
+                messageBox.innerHTML = `<div class="msg msg-success">Success! Redirecting to shop...</div>`;
+                
+                // Redirect to storefront
+                setTimeout(() => {
+                    window.location.href = 'storefront.html';
+                }, 1200);
+            } else {
+                // Show error message from app.js
+                messageBox.innerHTML = `<div class="msg msg-error">${result.message}</div>`;
+                
+                // Shake effect on error (optional)
+                const container = document.querySelector('.login-container');
+                container.style.transform = 'translateX(10px)';
+                setTimeout(() => container.style.transform = 'translateX(-10px)', 100);
+                setTimeout(() => container.style.transform = 'translateX(0)', 200);
+            }
+        });
+    </script>
+</body>
+</html>
