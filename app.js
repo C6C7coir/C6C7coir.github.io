@@ -69,15 +69,19 @@ window.CocoStore = (() => {
 
   const addToCart = (productId) => {
     const product = PRODUCTS.find(p => p.id === productId);
-    if (!product) return;
+    if (!product) return false; 
+    
     const cart = getCart();
     const found = cart.find(item => item.id === productId);
+    
     if (found) {
       found.qty += 1;
     } else {
       cart.push({ ...product, qty: 1 });
     }
+    
     saveCart(cart);
+    return true; // Added this so the UI knows it worked
   };
 
   const updateQty = (productId, delta) => {

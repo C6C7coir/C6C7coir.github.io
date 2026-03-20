@@ -17,7 +17,29 @@
 * {
     box-sizing: border-box;
 }
-
+.transition-hover {
+  transition: all 0.3s ease;
+}
+.transition-hover:hover {
+  transform: translateY(-10px);
+  shadow: 0 1rem 3rem rgba(0,0,0,.175)!important;
+}
+.btn-brand {
+  background-color: #2d5a27;
+  color: white;
+  border: none;
+}
+.btn-brand:hover {
+  background-color: #1e3d1a;
+  color: white;
+}
+/* Ensure product images are uniform */
+.product-card img {
+  transition: transform 0.5s ease;
+}
+.product-card:hover img {
+  transform: scale(1.05);
+}
 html {
     scroll-behavior: smooth;
 }

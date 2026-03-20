@@ -18,8 +18,7 @@
       <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#nav"><span class="navbar-toggler-icon"></span></button>
       <div class="collapse navbar-collapse" id="nav">
         <ul class="navbar-nav ms-auto me-3">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link active" href="storefront.html">Storefront</a></li>
+          <li class="nav-item"><a class="nav-link active" href="storefront.html">Dashboard</a></li>
           <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
           <li class="nav-item"><a class="nav-link" href="cart.html">Cart ({{ cartCount }})</a></li>
           <li class="nav-item"><a class="nav-link" href="checkout.html">Checkout</a></li>
@@ -32,21 +31,21 @@
   </nav>
 
   <section class="page-banner">
-    <div class="container">
-      <div class="store-banner p-4 p-md-5">
-        <div class="row align-items-center g-4">
-          <div class="col-lg-7">
-            <span class="badge badge-soft rounded-pill px-3 py-2 mb-3">Featured Products</span>
-            <h1 class="section-title">Welcome, {{ user?.fullName || 'Customer' }}</h1>
-            <p class="text-secondary mb-0">Browse new arrivals, trending picks, and best sellers made from coconut coir.</p>
-          </div>
-          <div class="col-lg-5">
-            <img src="images/Coco_Bag.jpg" class="product-image" alt="Coco Bag">
-          </div>
+  <div class="container">
+    <div class="store-banner p-4 p-md-5">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-7">
+          <span class="badge badge-soft rounded-pill px-3 py-2 mb-3">Featured Products</span>
+          <h1 class="section-title">Welcome, {{ displayName }}</h1>
+          <p class="text-secondary mb-0">Browse new arrivals, trending picks, and best sellers made from coconut coir.</p>
+        </div>
+        <div class="col-lg-5">
+          <img src="images/Coco_Bag.jpg" class="product-image shadow-sm" alt="Coco Bag" style="border-radius: 20px;">
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
   <section class="py-4">
     <div class="container">
@@ -131,23 +130,33 @@
 <script>
 CocoStore.requireAuth();
 const { createApp } = Vue;
+
 createApp({
-  data(){
+  data() {
     return {
       user: CocoStore.getCurrentUser(),
-      cartCount: CocoStore.getCart().reduce((s,i)=>s+i.qty,0),
+      cartCount: CocoStore.getCart().reduce((s, i) => s + i.qty, 0),
       newItems: CocoStore.PRODUCTS.filter(p => p.badge === "New"),
       trending: CocoStore.PRODUCTS.filter(p => p.badge === "Trending" || p.badge === "Popular" || p.badge === "Cute Pick"),
       bestsellers: CocoStore.PRODUCTS.filter(p => p.badge === "Best Seller")
     }
   },
-  methods:{
-    add(id){
+  // ADD THIS SECTION HERE
+  computed: {
+    displayName() {
+      if (!this.user || !this.user.fullName) return 'Customer';
+      
+      // This takes the full name and grabs only the first word (the "username")
+      return this.user.fullName.trim().split(' ')[0];
+    }
+  },
+  methods: {
+    add(id) {
       CocoStore.addToCart(id);
-      this.cartCount = CocoStore.getCart().reduce((s,i)=>s+i.qty,0);
+      this.cartCount = CocoStore.getCart().reduce((s, i) => s + i.qty, 0);
       alert("Added to cart.");
     },
-    signOut(){
+    signOut() {
       CocoStore.logout();
       location.href = "login.html";
     }

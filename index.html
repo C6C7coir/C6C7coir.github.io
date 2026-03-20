@@ -128,6 +128,37 @@
       </div>
     </div>
   </section>
+  <section class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Signature Collection</h2>
+      <p class="text-muted">Sustainable essentials for a greener lifestyle.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-6 col-md-4" v-for="product in featuredProducts" :key="product.id">
+        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden product-card-hover">
+          <img :src="product.image" class="card-img-top" :alt="product.name" style="height: 200px; object-fit: cover;">
+          <div class="card-body d-flex flex-column">
+            <h6 class="fw-bold mb-1">{{ product.name }}</h6>
+            <p class="small text-muted mb-3">{{ product.badge }}</p>
+            <div class="mt-auto d-flex justify-content-between align-items-center">
+              <span class="fw-bold text-success">₱{{ product.price }}</span>
+              <button class="btn btn-brand btn-sm rounded-pill px-3" @click="handlePurchase(product.id)">
+                Add to Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-5">
+      <a href="storefront.html" class="btn btn-outline-brand px-5 rounded-pill">View Products</a>
+    </div>
+  </div>
+</section>
+
 
   <footer class="py-5 bg-light border-top">
     <div class="container text-center">
@@ -145,10 +176,27 @@
 
 <script>
   const { createApp } = Vue;
+
   createApp({
     data() {
       return {
-        user: (typeof CocoStore !== 'undefined') ? CocoStore.getCurrentUser() : null
+        // 1. Check if user is logged in via your CocoStore
+        user: (typeof CocoStore !== 'undefined') ? CocoStore.getCurrentUser() : null,
+        
+        // 2. Get 6 products to display
+        featuredProducts: (typeof CocoStore !== 'undefined') ? CocoStore.PRODUCTS.slice(0, 6) : []
+      }
+    },
+    methods: {
+      handlePurchase(productId) {
+        // Check if the user object exists
+        if (!this.user) {
+          // ACTION: Redirect to login.html if NOT logged in
+          window.location.href = 'login.html';
+        } else {
+          // ACTION: Add to cart if logged in
+          
+        }
       }
     }
   }).mount("#app");
