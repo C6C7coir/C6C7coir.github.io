@@ -1,473 +1,414 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Green Husk Collective</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
 
-<title>Sign Up | Green Husk Collective</title>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3e9f5 100%);
+            min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            padding: 20px;
+        }
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+        .signup-container {
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            width: 100%; max-width: 650px;
+        }
 
-<style>
+        .logo-section { text-align: center; margin-bottom: 25px; }
+        .logo-section img { max-width: 90px; border-radius: 50%; margin-bottom: 8px; object-fit: cover; }
+        .tagline { color: #4ade80; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI',Roboto,sans-serif;
+        .form-row { display: flex; gap: 12px; margin-bottom: 12px; }
+
+        @media (max-width: 576px) {
+            .form-row { flex-direction: column; gap: 0; }
+            .signup-container { padding: 25px; }
+        }
+
+        .form-group { flex: 1; margin-bottom: 15px; }
+        .form-group label { display: block; color: #1b5e4a; font-weight: 600; margin-bottom: 6px; font-size: 0.85rem; }
+        
+        /* Dropdown & Input Styling with Hover Effect */
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px 14px; border: 2px solid #f0f2f5;
+            border-radius: 12px; font-size: 0.9rem; background-color: #f9fafb;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        /* NEW: Hover Effect for Dropdowns and Inputs */
+        .form-group input:hover, .form-group select:hover {
+            border-color: #4ade80;
+            background-color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #1b5e4a;
+            background-color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(27, 94, 74, 0.1);
+        }
+
+        .optional-badge { font-weight: normal; color: #9ca3af; font-size: 0.75rem; margin-left: 4px; }
+
+        /* Strength UI */
+        /* Container starts as invisible and slightly lower for a "slide-up" effect */
+/* Container starts with no height and no margin */
+.strength-container {
+    max-height: 0;
+    margin-top: 0;
+    opacity: 0;
+    overflow: hidden; /* Ensures content doesn't bleed out while height is 0 */
+    transition: all 0.3s ease-out;
+    pointer-events: none;
 }
 
-body{
-background:linear-gradient(135deg,#f5f7fa,#c3e9f5);
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
+/* When visible, we give it height and margin back */
+.strength-container.visible {
+    max-height: 60px; /* Enough to fit the bar and text */
+    margin-top: 8px;
+    opacity: 0.7; /* Your requested transparency */
+    pointer-events: auto;
 }
 
-.signup-container{
-background:#fff;
-border-radius:24px;
-box-shadow:0 20px 60px rgba(0,0,0,0.08);
-padding:40px;
-width:100%;
-max-width:650px;
+
+.strength-meter {
+    height: 6px;
+    background: #eee;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4px;
 }
 
-.logo-section{
-text-align:center;
-margin-bottom:25px;
+.strength-bar {
+    height: 100%;
+    width: 0%;
+    transition: width 0.4s ease, background-color 0.4s ease;
 }
 
-.logo-section img{
-max-width:90px;
-border-radius:50%;
-margin-bottom:8px;
+#strength-text {
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
-.tagline{
-color:#4ade80;
-font-size:.8rem;
-font-weight:700;
-text-transform:uppercase;
-}
+        .signup-btn {
+            width: 100%; padding: 16px; margin-top: 10px;
+            background: linear-gradient(135deg, #1b5e4a 0%, #2d8a6e 100%);
+            color: #fff; border: none; border-radius: 14px;
+            font-size: 1.1rem; font-weight: 600; cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .signup-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(27, 94, 74, 0.2); }
 
-.form-row{
-display:flex;
-gap:12px;
-}
+        .msg { padding: 10px; border-radius: 8px; text-align: center; font-size: 0.85rem; margin-bottom: 15px; }
+        .msg-error { background: #fef2f2; color: #ef4444; border: 1px solid #fee2e2; }
+        .msg-success { background: #f0fdf4; color: #22c55e; border: 1px solid #dcfce7; }
+        
+        .login-link { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #6b7280; }
+        .login-link a { color: #4ade80; text-decoration: none; font-weight: 700; }
 
-@media(max-width:576px){
-.form-row{
-flex-direction:column;
-}
-}
+        .form-group select {
+        cursor: pointer;
+        appearance: none; /* Removes default arrow to allow custom styling if needed */
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231b5e4a' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 15px center;
+        background-size: 12px;
+    }
 
-.form-group{
-flex:1;
-margin-bottom:15px;
-}
+    /* The "Tile" Hover/Focus effect */
+    .form-group select:hover {
+        border-color: #4ade80;
+        background-color: #ffffff;
+        box-shadow: 0 4px 12px rgba(74, 222, 128, 0.15);
+        transform: translateY(-2px);
+    }
 
-.form-group label{
-font-weight:600;
-font-size:.85rem;
-color:#1b5e4a;
-}
+    /* styling the internal options (Limited by Browser) */
+    .form-group select option {
+        padding: 12px;
+        background-color: #ffffff;
+        color: #1b5e4a;
+        font-size: 0.95rem;
+    }
 
-.form-group input,
-.form-group select{
-width:100%;
-padding:12px;
-border:2px solid #eee;
-border-radius:12px;
-background:#f9fafb;
-transition:.2s;
-}
+    /* This targets the 'active' tile in many modern browsers */
+    .form-group select option:hover,
+    .form-group select option:focus,
+    .form-group select option:checked {
+        background-color: #4ade80 !important;
+        color: #ffffff !important;
+        box-shadow: 0 0 10px 100px #4ade80 inset; /* Force color on some browsers */
+    }
 
-.form-group input:hover,
-.form-group select:hover{
-border-color:#4ade80;
-background:#fff;
-}
-
-.form-group input:focus,
-.form-group select:focus{
-outline:none;
-border-color:#1b5e4a;
-box-shadow:0 0 0 4px rgba(27,94,74,.1);
-}
-
-.signup-btn{
-width:100%;
-padding:16px;
-margin-top:10px;
-background:linear-gradient(135deg,#1b5e4a,#2d8a6e);
-color:#fff;
-border:none;
-border-radius:14px;
-font-size:1.1rem;
-cursor:pointer;
-}
-
-.msg{
-padding:10px;
-border-radius:8px;
-text-align:center;
-font-size:.85rem;
-margin-bottom:10px;
-}
-
-.msg-error{
-background:#fee;
-color:red;
-}
-
-.msg-success{
-background:#efe;
-color:green;
-}
-
-/* strength */
-
-.strength-container{
-max-height:0;
-overflow:hidden;
-opacity:0;
-transition:.3s;
-}
-
-.strength-container.visible{
-max-height:60px;
-opacity:.8;
-}
-
-.strength-meter{
-height:6px;
-background:#eee;
-border-radius:3px;
-}
-
-.strength-bar{
-height:100%;
-width:0%;
-transition:.3s;
-}
-
-</style>
+    /* Animation for the container when you click */
+    .form-group select:active {
+        transform: scale(0.98);
+    }
+    </style>
 </head>
-
 <body>
 
 <div class="signup-container">
+    <div class="logo-section">
+        <img src="images/c6c7.jpg" alt="Logo">
+        <p class="tagline">Green Husk Collective</p>
+    </div>
 
-<div class="logo-section">
-<img src="c6c7.jpg">
-<p class="tagline">Green Husk Collective</p>
+    <div id="message-container"></div>
+
+    <form id="signup-form">
+        <div class="form-row">
+            <div class="form-group">
+                <label>First Name *</label>
+                <input type="text" id="first-name" placeholder="First Name" required>
+            </div>
+            <div class="form-group">
+                <label>Middle Name <span class="optional-badge">(Optional)</span></label>
+                <input type="text" id="middle-name" placeholder="Middle Name">
+            </div>
+            <div class="form-group">
+                <label>Last Name *</label>
+                <input type="text" id="last-name" placeholder="Last Name" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Mobile Number *</label>
+            <input type="text" id="mobile" placeholder="09xxxxxxxxx" required>
+        </div>
+
+        <div class="form-group">
+            <label>Region *</label>
+            <select id="region" required>
+                <option value="">Select Region</option>
+                <option value="NCR">NCR (National Capital Region)</option>
+                <option value="CAR">CAR (Cordillera Administrative Region)</option>
+                <option value="Region I">Region I (Ilocos Region)</option>
+                <option value="Region II">Region II (Cagayan Valley)</option>
+                <option value="Region III">Region III (Central Luzon)</option>
+                <option value="Region IV-A">Region IV-A (CALABARZON)</option>
+                <option value="Region V">Region V (Bicol Region)</option>
+                <option value="Region VI">Region VI (Western Visayas)</option>
+                <option value="Region VII">Region VII (Central Visayas)</option>
+                <option value="Region XI">Region XI (Davao Region)</option>
+            </select>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>City *</label>
+                <select id="city" disabled required><option value="">Select Region First</option></select>
+            </div>
+            <div class="form-group">
+                <label>Barangay *</label>
+                <select id="barangay" disabled required><option value="">Select City First</option></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+
+        <div class="form-group">
+            <label>Username *</label>
+            <input type="text" id="username" placeholder="Username" required>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Password *</label>
+                <input type="password" id="password" required>
+                <div class="strength-container">
+                    <div class="strength-meter"><div id="strength-bar" class="strength-bar"></div></div>
+                    <span id="strength-text">Password strength: None</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Confirm Password *</label>
+                <input type="password" id="confirm-password" required>
+            </div>
+        </div>
+
+        <button type="submit" class="signup-btn">Create Account</button>
+    </form>
+
+    <div class="login-link">
+        Already have an account? <a href="login.html">Log In</a>
+    </div>
 </div>
 
-<div id="message-container"></div>
-
-<form id="signup-form">
-
-<div class="form-row">
-
-<div class="form-group">
-<label>First Name *</label>
-<input id="first-name" required>
-</div>
-
-<div class="form-group">
-<label>Middle Name</label>
-<input id="middle-name">
-</div>
-
-<div class="form-group">
-<label>Last Name *</label>
-<input id="last-name" required>
-</div>
-
-</div>
-
-
-<div class="form-group">
-<label>Mobile *</label>
-<input id="mobile" required>
-</div>
-
-
-<div class="form-group">
-<label>Region *</label>
-<select id="region" required>
-<option>Loading...</option>
-</select>
-</div>
-
-
-<div class="form-row">
-
-<div class="form-group">
-<label>City *</label>
-<select id="city" disabled required>
-<option>Select region first</option>
-</select>
-</div>
-
-<div class="form-group">
-<label>Barangay *</label>
-<select id="barangay" disabled required>
-<option>Select city first</option>
-</select>
-</div>
-
-</div>
-
-
-<div class="form-group">
-<label>Email *</label>
-<input id="email" required>
-</div>
-
-
-<div class="form-group">
-<label>Username *</label>
-<input id="username" required>
-</div>
-
-
-<div class="form-row">
-
-<div class="form-group">
-
-<label>Password *</label>
-<input type="password" id="password" required>
-
-<div class="strength-container">
-
-<div class="strength-meter">
-<div id="strength-bar" class="strength-bar"></div>
-</div>
-
-<span id="strength-text"></span>
-
-</div>
-
-</div>
-
-
-<div class="form-group">
-<label>Confirm *</label>
-<input type="password" id="confirm-password" required>
-</div>
-
-</div>
-
-
-<button class="signup-btn">
-Create Account
-</button>
-
-</form>
-
-</div>
-
-
-
+<script src="app.js"></script>
+<script src="app.js"></script>
 <script>
-
-
-/* ======================
-PSGC REGION API
-====================== */
-
-const regionSelect=document.getElementById("region")
-const citySelect=document.getElementById("city")
-const barangaySelect=document.getElementById("barangay")
-
-
-async function safeFetch(url){
-
-const r=await fetch(url)
-
-if(!r.ok)throw "error"
-
-return r.json()
-
-}
-
-
-function setLoading(el,text){
-
-el.innerHTML=`<option>${text}</option>`
-
-el.disabled=true
-
-}
-
-
-function setOptions(el,data,label){
-
-el.innerHTML=`<option value="">${label}</option>`
-
-data.forEach(x=>{
-
-let o=document.createElement("option")
-
-o.value=x.code
-
-o.textContent=x.name
-
-el.appendChild(o)
-
-})
-
-el.disabled=false
-
-}
-
-
-
-/* LOAD REGION */
-
-(async()=>{
-
-setLoading(regionSelect,"Loading...")
-
-let regions=await safeFetch(
-"https://psgc.gitlab.io/api/regions/"
-)
-
-regions.sort((a,b)=>
-a.name.localeCompare(b.name)
-)
-
-setOptions(regionSelect,regions,"Select Region")
-
-})()
-
-
-
-/* REGION → CITY */
-
-regionSelect.addEventListener("change",async function(){
-
-let code=this.value
-
-setLoading(citySelect,"Loading...")
-setLoading(barangaySelect,"Select city first")
-
-if(!code)return
-
-let cities=await safeFetch(
-`https://psgc.gitlab.io/api/regions/${code}/cities-municipalities/`
-)
-
-cities.sort((a,b)=>
-a.name.localeCompare(b.name)
-)
-
-setOptions(
-citySelect,
-cities,
-"Select City"
-)
-
-})
-
-
-
-/* CITY → BRGY */
-
-citySelect.addEventListener("change",async function(){
-
-let code=this.value
-
-setLoading(barangaySelect,"Loading...")
-
-if(!code)return
-
-let b=await safeFetch(
-`https://psgc.gitlab.io/api/cities-municipalities/${code}/barangays/`
-)
-
-b.sort((a,b)=>
-a.name.localeCompare(b.name)
-)
-
-setOptions(
-barangaySelect,
-b,
-"Select Barangay"
-)
-
-})
-
-
-
-/* ======================
-PASSWORD STRENGTH
-====================== */
-
-const password=document.getElementById("password")
-
-const bar=document.getElementById("strength-bar")
-
-const text=document.getElementById("strength-text")
-
-const container=document.querySelector(".strength-container")
-
-
-password.addEventListener("input",function(){
-
-let v=this.value
-
-if(v.length>0)
-container.classList.add("visible")
-else
-container.classList.remove("visible")
-
-let s=0
-
-if(v.length>=8)s++
-if(/[A-Z]/.test(v))s++
-if(/[0-9]/.test(v))s++
-if(/[^A-Za-z0-9]/.test(v))s++
-
-const colors=["red","orange","gold","green"]
-const labels=["Weak","Fair","Good","Strong"]
-
-bar.style.width=(s*25)+"%"
-bar.style.backgroundColor=colors[s-1]
-
-text.textContent=labels[s-1]||""
-
-})
-
-
-
-/* ======================
-SUBMIT
-====================== */
-
-document.getElementById("signup-form")
-.addEventListener("submit",function(e){
-
-e.preventDefault()
-
-let pass=password.value
-let confirm=document.getElementById("confirm-password").value
-
-if(pass!==confirm){
-alert("Password not match")
-return
-}
-
-alert("Registered!")
-
-})
-
-
+    // 1. Data Object (Comprehensive Regions)
+    const regionData = {
+        'NCR': { 
+            'Manila': ['Binondo', 'Malate', 'Ermita', 'Tondo', 'Sampaloc'], 
+            'Quezon City': ['Novaliches', 'Commonwealth', 'Batasan Hills', 'Cubao'], 
+            'Makati': ['Bel-Air', 'Poblacion', 'San Lorenzo', 'Guadalupe Nuevo'],
+            'Taguig': ['BGC', 'Fort Bonifacio', 'Ususan', 'Pinagsama'],
+            'Pasig': ['San Antonio', 'Ugong', 'Kapitolyo', 'Caniogan']
+        },
+        'CAR': { 
+            'Baguio': ['Irisan', 'Bakakeng', 'Pacdal', 'Gibraltar'], 
+            'Tabuk': ['Dagupan', 'Bulanao', 'Appas'],
+            'Bangued': ['Poblacion', 'Zone 1', 'Zone 5']
+        },
+        'Region I': { 
+            'Laoag': ['Poblacion', 'San Lorenzo', 'Brgy 1', 'Brgy 5'], 
+            'Vigan': ['Ayusan', 'Pagburnayan', 'Pantay Daya'],
+            'Dagupan': ['Tapuac', 'Lucao', 'Pantal'],
+            'San Fernando (LU)': ['Sevilla', 'Poro', 'Lingsat']
+        },
+        'Region II': { 
+            'Tuguegarao': ['Cataggaman', 'Ugac', 'Carig Sur'], 
+            'Santiago': ['Victory', 'Dubinan', 'Plaridel'],
+            'Ilagan': ['Poblacion', 'Guinatan', 'Calamagui']
+        },
+        'Region III': { 
+            'Angeles': ['Balibago', 'Pampang', 'Cutcut', 'Malabanias'], 
+            'San Fernando (P)': ['Dolores', 'Sindalan', 'San Agustin'],
+            'Olongapo': ['Barretto', 'Gordon Heights', 'East Tapinac'],
+            'Malolos': ['Bulihan', 'Longos', 'Dakila']
+        },
+        'Region IV-A': { 
+            'Calamba': ['Canlubang', 'Pansol', 'Real', 'Mayapa'], 
+            'Antipolo': ['Dela Paz', 'San Jose', 'Mambugan'],
+            'Batangas City': ['Alangilan', 'Poblacion', 'Kumintang Ibaba'],
+            'Bacoor': ['Molino', 'San Nicolas', 'Habay']
+        },
+        'Region VII': { 
+            'Cebu City': ['Lahug', 'Mabolo', 'Guadalupe', 'Banilad'], 
+            'Lapu-Lapu': ['Basak', 'Marigondon', 'Pajo'],
+            'Dumaguete': ['Poblacion', 'Daro', 'Banilad'],
+            'Tagbilaran': ['Dao', 'Mansasa', 'Cogon']
+        },
+        'Region XI': { 
+            'Davao City': ['Matina', 'Buhangin', 'Agdao', 'Toril', 'Talomo'], 
+            'Tagum': ['Magugpo', 'Apokon', 'Visayan Village'],
+            'Digos': ['Aplaya', 'Tres de Mayo']
+        }
+    };
+
+    // 2. Element Selectors
+    const regionSelect = document.getElementById('region');
+    const citySelect = document.getElementById('city');
+    const barangaySelect = document.getElementById('barangay');
+    const passwordInput = document.getElementById('password');
+    const strengthContainer = document.querySelector('.strength-container');
+    const strengthBar = document.getElementById('strength-bar');
+    const strengthText = document.getElementById('strength-text');
+
+    // 3. Address Cascade Logic
+    regionSelect.addEventListener('change', function() {
+        citySelect.innerHTML = '<option value="">Select City</option>';
+        barangaySelect.innerHTML = '<option value="">Select City First</option>';
+        barangaySelect.disabled = true;
+        
+        if (this.value && regionData[this.value]) {
+            Object.keys(regionData[this.value]).forEach(c => {
+                citySelect.innerHTML += `<option value="${c}">${c}</option>`;
+            });
+            citySelect.disabled = false;
+        } else {
+            citySelect.disabled = true;
+        }
+    });
+
+    citySelect.addEventListener('change', function() {
+        barangaySelect.innerHTML = '<option value="">Select Barangay</option>';
+        const r = regionSelect.value;
+        const c = this.value;
+        
+        if (c && regionData[r][c]) {
+            regionData[r][c].forEach(b => {
+                barangaySelect.innerHTML += `<option value="${b}">${b}</option>`;
+            });
+            barangaySelect.disabled = false;
+        } else {
+            barangaySelect.disabled = true;
+        }
+    });
+
+    // 4. Password Strength & Visibility Toggle
+    passwordInput.addEventListener('input', function() {
+        const val = this.value;
+        
+        // Toggle visibility based on text length
+        if (val.length > 0) {
+            strengthContainer.classList.add('visible');
+        } else {
+            strengthContainer.classList.remove('visible');
+        }
+
+        let s = 0;
+        if (val.length >= 8) s++;
+        if (val.match(/[A-Z]/)) s++;
+        if (val.match(/[0-9]/)) s++;
+        if (val.match(/[^a-zA-Z0-9]/)) s++;
+        
+        const colors = ['#ef4444', '#f59e0b', '#84cc16', '#22c55e'];
+        const labels = ['Weak', 'Fair', 'Good', 'Strong'];
+        
+        strengthBar.style.width = (s * 25) + '%';
+        strengthBar.style.backgroundColor = colors[s-1] || '#eee';
+        
+        if (s > 0) {
+            strengthText.textContent = 'Password strength: ' + labels[s-1];
+            strengthText.style.color = colors[s-1];
+        } else {
+            strengthText.textContent = 'Password strength: Too Short';
+            strengthText.style.color = '#9ca3af';
+        }
+    });
+
+    // 5. Submit Registration
+    document.getElementById('signup-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const msg = document.getElementById('message-container');
+        
+        const pass = document.getElementById('password').value;
+        const confirm = document.getElementById('confirm-password').value;
+
+        if (pass !== confirm) {
+            msg.innerHTML = '<div class="msg msg-error">Passwords do not match!</div>';
+            return;
+        }
+
+        // Clean name logic (handles optional middle name)
+        const firstName = document.getElementById('first-name').value;
+        const middleName = document.getElementById('middle-name').value;
+        const lastName = document.getElementById('last-name').value;
+        const fullName = `${firstName} ${middleName} ${lastName}`.replace(/\s+/g, ' ').trim();
+
+        const user = {
+            fullName: fullName,
+            username: document.getElementById('username').value,
+            email: document.getElementById('email').value,
+            password: pass,
+            mobile: document.getElementById('mobile').value,
+            address: `${barangaySelect.value}, ${citySelect.value}, ${regionSelect.value}`
+        };
+
+        const res = CocoStore.register(user);
+        
+        if (res.ok) {
+            msg.innerHTML = '<div class="msg msg-success">Success! Redirecting...</div>';
+            setTimeout(() => window.location.href = 'storefront.html', 1500);
+        } else {
+            msg.innerHTML = `<div class="msg msg-error">${res.message}</div>`;
+        }
+    });
 </script>
-
-</body>
-</html>
