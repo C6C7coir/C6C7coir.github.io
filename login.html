@@ -316,7 +316,7 @@
 
         // 🔹 Validate login credentials against localStorage (demo only)
         function authenticateUser(identifier, password) {
-            const users = JSON.parse(localStorage.getItem('ghc_users') || '[]');
+            const users = JSON.parse(localStorage.getItem('coco_users') || '[]');
             
             // Search by username OR email (case-insensitive)
             const user = users.find(u => 
