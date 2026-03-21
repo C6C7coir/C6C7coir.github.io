@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up | Green Husk Collective</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; font-src https://cdn.jsdelivr.net; img-src 'self' data:; connect-src https://psgc.gitlab.io;">
+    <title>Sign Up |  C6C7</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
@@ -11,7 +12,7 @@
         body {
             background: linear-gradient(135deg, #f5f7fa 0%, #c3e9f5 100%);
             min-height: 100vh;
-            display: flex; justify-content: center; align-items: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
             padding: 20px;
         }
 
@@ -36,7 +37,7 @@
 
         .form-group { flex: 1; margin-bottom: 15px; }
         .form-group label { display: block; color: #1b5e4a; font-weight: 600; margin-bottom: 6px; font-size: 0.85rem; }
-        
+
         .form-group input, .form-group select {
             width: 100%; padding: 12px 14px; border: 2px solid #f0f2f5;
             border-radius: 12px; font-size: 0.9rem; background-color: #f9fafb;
@@ -107,7 +108,7 @@
         .msg { padding: 10px; border-radius: 8px; text-align: center; font-size: 0.85rem; margin-bottom: 15px; }
         .msg-error { background: #fef2f2; color: #ef4444; border: 1px solid #fee2e2; }
         .msg-success { background: #f0fdf4; color: #22c55e; border: 1px solid #dcfce7; }
-        
+
         .login-link { text-align: center; margin-top: 20px; font-size: 0.9rem; color: #6b7280; }
         .login-link a { color: #4ade80; text-decoration: none; font-weight: 700; }
 
@@ -135,39 +136,48 @@
         }
 
         .form-group select:active { transform: scale(0.98); }
-        
+
         .loading { opacity: 0.6; pointer-events: none; }
+
+        .site-footer {
+            margin-top: 32px;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.78rem;
+            max-width: 650px;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
 
 <div class="signup-container">
     <div class="logo-section">
-        <img src="c6c7.jpg" alt="Green Husk Collective Logo">
-        <p class="tagline">Green Husk Collective</p>
+        <img src="images/c6c7.jpg" alt="C6C7 Logo">
+        <p class="tagline">C6C7</p>
     </div>
 
     <div id="message-container"></div>
 
-    <form id="signup-form">
+    <form id="signup-form" novalidate>
         <div class="form-row">
             <div class="form-group">
                 <label>First Name *</label>
-                <input type="text" id="first-name" placeholder="First Name" required>
+                <input type="text" id="first-name" placeholder="First Name" required maxlength="50">
             </div>
             <div class="form-group">
                 <label>Middle Name <span class="optional-badge">(Optional)</span></label>
-                <input type="text" id="middle-name" placeholder="Middle Name">
+                <input type="text" id="middle-name" placeholder="Middle Name" maxlength="50">
             </div>
             <div class="form-group">
                 <label>Last Name *</label>
-                <input type="text" id="last-name" placeholder="Last Name" required>
+                <input type="text" id="last-name" placeholder="Last Name" required maxlength="50">
             </div>
         </div>
 
         <div class="form-group">
             <label>Mobile Number *</label>
-            <input type="tel" id="mobile" placeholder="09xxxxxxxxx" pattern="09[0-9]{9}" required>
+            <input type="tel" id="mobile" placeholder="09xxxxxxxxx" pattern="09[0-9]{9}" required maxlength="11">
         </div>
 
         <div class="form-group">
@@ -194,18 +204,18 @@
 
         <div class="form-group">
             <label>Email Address *</label>
-            <input type="email" id="email" placeholder="you@example.com" required>
+            <input type="email" id="email" placeholder="you@example.com" required maxlength="100">
         </div>
 
         <div class="form-group">
             <label>Username *</label>
-            <input type="text" id="username" placeholder="Choose a username" required minlength="3">
+            <input type="text" id="username" placeholder="Choose a username" required minlength="3" maxlength="30">
         </div>
 
         <div class="form-row">
             <div class="form-group">
                 <label>Password *</label>
-                <input type="password" id="password" required minlength="8">
+                <input type="password" id="password" required minlength="8" maxlength="128">
                 <div class="strength-container">
                     <div class="strength-meter"><div id="strength-bar" class="strength-bar"></div></div>
                     <span id="strength-text"></span>
@@ -213,7 +223,7 @@
             </div>
             <div class="form-group">
                 <label>Confirm Password *</label>
-                <input type="password" id="confirm-password" required>
+                <input type="password" id="confirm-password" required maxlength="128">
             </div>
         </div>
 
@@ -225,217 +235,241 @@
     </div>
 </div>
 
+<div class="site-footer">
+    &copy; 2026 C6C7. For educational purposes only, and no copyright infringement is intended.
+</div>
+
+<script src="app.js"></script>
 <script>
-/* ======================
-   PSGC API INTEGRATION
-   ====================== */
+    // Redirect to storefront if already logged in
+    CocoStore.redirectIfLoggedIn('storefront.html');
 
-const regionSelect = document.getElementById('region');
-const citySelect = document.getElementById('city');
-const barangaySelect = document.getElementById('barangay');
+    /* ======================
+       PSGC API INTEGRATION
+       ====================== */
 
-async function safeFetch(url) {
-    try {
-        const response = await fetch(url.trim());
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return await response.json();
-    } catch (error) {
-        console.error('API Error:', error);
-        throw error;
+    const regionSelect = document.getElementById('region');
+    const citySelect = document.getElementById('city');
+    const barangaySelect = document.getElementById('barangay');
+
+    async function safeFetch(url) {
+        try {
+            const response = await fetch(url.trim());
+            if (!response.ok) throw new Error('HTTP ' + response.status);
+            return await response.json();
+        } catch (error) {
+            console.error('API Error:', error);
+            throw error;
+        }
     }
-}
 
-function setLoading(selectEl, message) {
-    selectEl.innerHTML = `<option value="">${message}</option>`;
-    selectEl.disabled = true;
-}
+    function setLoading(selectEl, message) {
+        selectEl.innerHTML = '<option value="">' + message + '</option>';
+        selectEl.disabled = true;
+    }
 
-function setOptions(selectEl, data, placeholder, valueKey = 'code', labelKey = 'name') {
-    selectEl.innerHTML = `<option value="">${placeholder}</option>`;
-    const sorted = [...data].sort((a, b) => a[labelKey].localeCompare(b[labelKey]));
-    sorted.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item[valueKey];
-        option.textContent = item[labelKey];
-        selectEl.appendChild(option);
+    function setOptions(selectEl, data, placeholder, valueKey, labelKey) {
+        valueKey = valueKey || 'code';
+        labelKey = labelKey || 'name';
+        selectEl.innerHTML = '<option value="">' + placeholder + '</option>';
+        const sorted = [...data].sort((a, b) => a[labelKey].localeCompare(b[labelKey]));
+        sorted.forEach(function (item) {
+            const option = document.createElement('option');
+            option.value = item[valueKey];
+            option.textContent = item[labelKey];
+            selectEl.appendChild(option);
+        });
+        selectEl.disabled = false;
+    }
+
+    (async function loadRegions() {
+        setLoading(regionSelect, 'Loading regions...');
+        try {
+            const regions = await safeFetch('https://psgc.gitlab.io/api/regions/');
+            setOptions(regionSelect, regions, 'Select Region');
+        } catch (err) {
+            setLoading(regionSelect, 'Failed to load regions');
+            showMessage('Unable to load location data. Please check your connection.', 'error');
+        }
+    })();
+
+    regionSelect.addEventListener('change', async function () {
+        const regionCode = this.value;
+        setLoading(citySelect, 'Loading cities...');
+        setLoading(barangaySelect, 'Select city first');
+        if (!regionCode) return;
+        try {
+            const cities = await safeFetch(
+                'https://psgc.gitlab.io/api/regions/' + regionCode + '/cities-municipalities/'
+            );
+            setOptions(citySelect, cities, 'Select City/Municipality');
+        } catch (err) {
+            setLoading(citySelect, 'Failed to load cities');
+        }
     });
-    selectEl.disabled = false;
-}
 
-(async function loadRegions() {
-    setLoading(regionSelect, 'Loading regions...');
-    try {
-        const regions = await safeFetch('https://psgc.gitlab.io/api/regions/');
-        setOptions(regionSelect, regions, 'Select Region');
-    } catch (err) {
-        setLoading(regionSelect, 'Failed to load regions');
-        showMessage('Unable to load location data. Please check your connection.', 'error');
+    citySelect.addEventListener('change', async function () {
+        const cityCode = this.value;
+        setLoading(barangaySelect, 'Loading barangays...');
+        if (!cityCode) return;
+        try {
+            const barangays = await safeFetch(
+                'https://psgc.gitlab.io/api/cities-municipalities/' + cityCode + '/barangays/'
+            );
+            setOptions(barangaySelect, barangays, 'Select Barangay');
+        } catch (err) {
+            setLoading(barangaySelect, 'Failed to load barangays');
+        }
+    });
+
+    /* ======================
+       PASSWORD STRENGTH METER
+       ====================== */
+
+    const passwordInput = document.getElementById('password');
+    const strengthBar = document.getElementById('strength-bar');
+    const strengthText = document.getElementById('strength-text');
+    const strengthContainer = document.querySelector('.strength-container');
+
+    passwordInput.addEventListener('input', function () {
+        const val = this.value;
+        if (val.length > 0) {
+            strengthContainer.classList.add('visible');
+        } else {
+            strengthContainer.classList.remove('visible');
+            strengthBar.style.width = '0%';
+            strengthText.textContent = '';
+            return;
+        }
+
+        let score = 0;
+        if (val.length >= 8) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        const colors = ['#ef4444', '#f59e0b', '#84cc16', '#22c55e'];
+        const labels = ['Weak', 'Fair', 'Good', 'Strong'];
+
+        strengthBar.style.width = (score * 25) + '%';
+        strengthBar.style.backgroundColor = colors[score - 1] || '#eee';
+        strengthText.textContent = score > 0 ? 'Strength: ' + labels[score - 1] : '';
+        strengthText.style.color = score > 0 ? colors[score - 1] : '#9ca3af';
+    });
+
+    /* ======================
+       FORM SUBMISSION & UTILS
+       ====================== */
+
+    const form = document.getElementById('signup-form');
+    const messageContainer = document.getElementById('message-container');
+    const submitBtn = document.getElementById('submit-btn');
+
+    function showMessage(text, type) {
+        const div = document.createElement('div');
+        div.className = 'msg msg-' + type;
+        div.textContent = text;
+        messageContainer.innerHTML = '';
+        messageContainer.appendChild(div);
+        if (type === 'success') {
+            setTimeout(function () { messageContainer.innerHTML = ''; }, 3000);
+        }
     }
-})();
 
-regionSelect.addEventListener('change', async function() {
-    const regionCode = this.value;
-    setLoading(citySelect, 'Loading cities...');
-    setLoading(barangaySelect, 'Select city first');
-    if (!regionCode) return;
-    try {
-        const cities = await safeFetch(
-            `https://psgc.gitlab.io/api/regions/${regionCode}/cities-municipalities/`
-        );
-        setOptions(citySelect, cities, 'Select City/Municipality');
-    } catch (err) {
-        setLoading(citySelect, 'Failed to load cities');
-    }
-});
+    function validateForm() {
+        const pass = document.getElementById('password').value;
+        const confirm = document.getElementById('confirm-password').value;
 
-citySelect.addEventListener('change', async function() {
-    const cityCode = this.value;
-    setLoading(barangaySelect, 'Loading barangays...');
-    if (!cityCode) return;
-    try {
-        const barangays = await safeFetch(
-            `https://psgc.gitlab.io/api/cities-municipalities/${cityCode}/barangays/`
-        );
-        setOptions(barangaySelect, barangays, 'Select Barangay');
-    } catch (err) {
-        setLoading(barangaySelect, 'Failed to load barangays');
-    }
-});
-
-/* ======================
-   PASSWORD STRENGTH METER
-   ====================== */
-
-const passwordInput = document.getElementById('password');
-const strengthBar = document.getElementById('strength-bar');
-const strengthText = document.getElementById('strength-text');
-const strengthContainer = document.querySelector('.strength-container');
-
-passwordInput.addEventListener('input', function() {
-    const val = this.value;
-    if (val.length > 0) {
-        strengthContainer.classList.add('visible');
-    } else {
-        strengthContainer.classList.remove('visible');
-        strengthBar.style.width = '0%';
-        strengthText.textContent = '';
-        return;
+        if (pass.length < 8) {
+            showMessage('Password must be at least 8 characters.', 'error');
+            return false;
+        }
+        if (pass !== confirm) {
+            showMessage('Passwords do not match!', 'error');
+            return false;
+        }
+        const mobile = document.getElementById('mobile').value;
+        if (!/^09[0-9]{9}$/.test(mobile)) {
+            showMessage('Please enter a valid Philippine mobile number (09xxxxxxxxx).', 'error');
+            return false;
+        }
+        return true;
     }
 
-    let score = 0;
-    if (val.length >= 8) score++;
-    if (/[A-Z]/.test(val)) score++;
-    if (/[0-9]/.test(val)) score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
+    form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        if (!validateForm()) return;
 
-    const colors = ['#ef4444', '#f59e0b', '#84cc16', '#22c55e'];
-    const labels = ['Weak', 'Fair', 'Good', 'Strong'];
-    
-    strengthBar.style.width = `${score * 25}%`;
-    strengthBar.style.backgroundColor = colors[score - 1] || '#eee';
-    strengthText.textContent = score > 0 ? `Strength: ${labels[score - 1]}` : '';
-    strengthText.style.color = score > 0 ? colors[score - 1] : '#9ca3af';
-});
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Creating Account...';
 
-/* ======================
-   FORM SUBMISSION & UTILS
-   ====================== */
+        const firstName = document.getElementById('first-name').value.trim();
+        const middleName = document.getElementById('middle-name').value.trim();
+        const lastName = document.getElementById('last-name').value.trim();
+        const fullName = [firstName, middleName, lastName].filter(function (n) { return n; }).join(' ');
+        const email = document.getElementById('email').value.trim().toLowerCase();
+        const username = document.getElementById('username').value.trim();
 
-const form = document.getElementById('signup-form');
-const messageContainer = document.getElementById('message-container');
-const submitBtn = document.getElementById('submit-btn');
+        // Check for duplicate email or username before submitting
+        const existingUsers = JSON.parse(localStorage.getItem('coco_users') || '[]');
+        if (existingUsers.some(function (u) { return u.email.toLowerCase() === email; })) {
+            showMessage('This email is already registered. Please log in.', 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Create Account';
+            return;
+        }
+        if (existingUsers.some(function (u) { return u.username.toLowerCase() === username.toLowerCase(); })) {
+            showMessage('Username is already taken. Please choose another.', 'error');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Create Account';
+            return;
+        }
 
-function showMessage(text, type) {
-    messageContainer.innerHTML = `<div class="msg msg-${type}">${text}</div>`;
-    if (type === 'success') {
-        setTimeout(() => { messageContainer.innerHTML = ''; }, 3000);
-    }
-}
+        const userData = {
+            fullName: fullName,
+            username: username,
+            email: email,
+            password: document.getElementById('password').value,
+            mobile: document.getElementById('mobile').value,
+            address: {
+                barangay: barangaySelect.options[barangaySelect.selectedIndex]?.text || "",
+                city: citySelect.options[citySelect.selectedIndex]?.text || "",
+                region: regionSelect.options[regionSelect.selectedIndex]?.text || ""
+            },
+            timestamp: new Date().toISOString()
+        };
 
-function validateForm() {
-    const pass = document.getElementById('password').value;
-    const confirm = document.getElementById('confirm-password').value;
-    
-    if (pass !== confirm) {
-        showMessage('Passwords do not match!', 'error');
-        return false;
-    }
-    if (pass.length < 8) {
-        showMessage('Password must be at least 8 characters.', 'error');
-        return false;
-    }
-    const mobile = document.getElementById('mobile').value;
-    if (!/^09[0-9]{9}$/.test(mobile)) {
-        showMessage('Please enter a valid Philippine mobile number (09xxxxxxxxx).', 'error');
-        return false;
-    }
-    return true;
-}
+        try {
+            await new Promise(function (resolve) { setTimeout(resolve, 800); });
 
-form.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    if (!validateForm()) return;
-    
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Creating Account...';
-    
-    const firstName = document.getElementById('first-name').value.trim();
-    const middleName = document.getElementById('middle-name').value.trim();
-    const lastName = document.getElementById('last-name').value.trim();
-    const fullName = [firstName, middleName, lastName].filter(n => n).join(' ');
-    
-    // ✅ FIXED: Password is now included!
-    const userData = {
-        fullName: fullName,
-        username: document.getElementById('username').value.trim(),
-        email: document.getElementById('email').value.trim().toLowerCase(),
-        password: document.getElementById('password').value, // 🔑 ADDED THIS LINE
-        mobile: document.getElementById('mobile').value,
-        address: {
-            barangay: barangaySelect.value,
-            city: citySelect.value,
-            region: regionSelect.value
-        },
-        timestamp: new Date().toISOString()
-    };
-    
-    try {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
+            const users = JSON.parse(localStorage.getItem('coco_users') || '[]');
+            users.push({ ...userData, id: Date.now() });
+            localStorage.setItem('coco_users', JSON.stringify(users));
+
+            showMessage('Account created! Redirecting to login...', 'success');
+
+            const userEmail = encodeURIComponent(userData.email);
+            setTimeout(function () {
+                window.location.href = 'login.html?email=' + userEmail;
+            }, 1500);
+
+        } catch (error) {
+            showMessage('Registration failed. Please try again.', 'error');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Create Account';
+        }
+    });
+
+    // Live username availability check
+    document.getElementById('username').addEventListener('blur', function () {
+        const username = this.value.trim();
+        if (username.length < 3) return;
         const users = JSON.parse(localStorage.getItem('coco_users') || '[]');
-        users.push({ ...userData, id: Date.now() });
-        localStorage.setItem('coco_users', JSON.stringify(users));
-        
-        // Debug log
-        console.log('User registered:', userData);
-        console.log('All users:', JSON.parse(localStorage.getItem('coco_users')));
-        
-        showMessage('Account created! Please log in to continue.', 'success');
-        
-        const userEmail = encodeURIComponent(userData.email);
-        
-        setTimeout(() => {
-            window.location.href = `login.html?email=${userEmail}`;
-        }, 2000);
-        
-    } catch (error) {
-        console.error('Registration error:', error);
-        showMessage('Registration failed. Please try again.', 'error');
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Create Account';
-    }
-});
-
-document.getElementById('username').addEventListener('blur', async function() {
-    const username = this.value.trim();
-    if (username.length < 3) return;
-    const users = JSON.parse(localStorage.getItem('coco_users') || '[]');
-    const exists = users.some(u => u.username.toLowerCase() === username.toLowerCase());
-    if (exists) {
-        showMessage('Username is already taken.', 'error');
-    }
-});
+        if (users.some(function (u) { return u.username.toLowerCase() === username.toLowerCase(); })) {
+            showMessage('Username is already taken.', 'error');
+        }
+    });
 </script>
 
 </body>
