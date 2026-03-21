@@ -339,45 +339,48 @@
 
         // 🔹 Handle form submission
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
+    e.preventDefault();
+    
+    const identifier = loginIdInput.value.trim();
+    const password = loginPassInput.value;
+    
+    if (!identifier || !password) {
+        showMessage('Please enter both username/email and password.', 'error');
+        return;
+    }
+
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'Logging in...';
+
+    setTimeout(() => {
+        const result = authenticateUser(identifier, password);
+        
+        if (result.ok) {
+            // ✅ FIX 1: Use 'coco_session' to match CocoStore's KEY_SESSION
+            localStorage.setItem('coco_session', JSON.stringify(result.user));
             
-            const identifier = loginIdInput.value.trim();
-            const password = loginPassInput.value;
-            
-            // Basic validation
-            if (!identifier || !password) {
-                showMessage('Please enter both username/email and password.', 'error');
-                return;
+            // Handle "Remember me"
+            const rememberMe = document.getElementById('remember-me').checked;
+            if (rememberMe) {
+                localStorage.setItem('ghc_remembered_id', identifier);
+            } else {
+                localStorage.removeItem('ghc_remembered_id');
             }
-
-            // Disable button during auth
-            loginBtn.disabled = true;
-            loginBtn.textContent = 'Logging in...';
-
-            // Simulate small delay for UX
+            
+            showMessage('Success! Redirecting to shop...', 'success');
+            
             setTimeout(() => {
-                const result = authenticateUser(identifier, password);
-                
-                if (result.ok) {
-                    // ✅ Save session (demo: localStorage)
-                    localStorage.setItem('ghc_current_user', JSON.stringify(result.user));
-                    
-                    // Handle "Remember me"
-                    const rememberMe = document.getElementById('remember-me').checked;
-                    if (rememberMe) {
-                        localStorage.setItem('ghc_remembered_id', identifier);
-                    } else {
-                        localStorage.removeItem('ghc_remembered_id');
-                    }
-                    
-                    showMessage('Success! Redirecting to shop...', 'success');
-                    
-                    setTimeout(() => {
-                        window.location.href = 'storefront.html';
-                    }, 1200);
-                } else {
-                    // ❌ Show error + shake animation
-                    showMessage(result.message, 'error');
+                window.location.href = 'storefront.html';
+            }, 1200);
+        } else {
+            showMessage(result.message, 'error');
+            // ... (keep your shake animation code here)
+        }
+        
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Log In';
+    }, 600);
+});
                     
                     const container = document.querySelector('.login-container');
                     container.style.animation = 'none';
