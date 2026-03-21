@@ -117,7 +117,7 @@
 </footer>
 </div>
 
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
 <script src="app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
@@ -126,11 +126,21 @@ const { createApp } = Vue;
 createApp({
   data(){
     const user = CocoStore.getCurrentUser() || {};
+    const rawAddress = user.address || null;
+    let addressStr = "";
+    if (rawAddress) {
+      if (typeof rawAddress === "object") {
+        addressStr = [rawAddress.barangay, rawAddress.city, rawAddress.region].filter(Boolean).join(", ");
+      } else {
+        addressStr = rawAddress;
+      }
+    }
     return {
       cart: CocoStore.getCart(),
       paymentMethod:"",
       fulfillment:"",
-      address:user.address || "",
+      address: addressStr,
+      _rawAddress: rawAddress,
       message:"",
       ok:false
     }
@@ -154,8 +164,36 @@ createApp({
     },
     signOut(){ CocoStore.logout(); location.href = "login.html"; }
   },
-  mounted(){
+  async mounted(){
     CocoStore.setupInteractiveCards();
+    const raw = this._rawAddress;
+    if (raw && typeof raw === "object") {
+      const isPsgcCode = val => /^\d{6,10}$/.test(String(val || "").trim());
+      if (isPsgcCode(raw.barangay) || isPsgcCode(raw.city) || isPsgcCode(raw.region)) {
+        try {
+          const fetchName = async (url, fallback) => {
+            try {
+              const res = await fetch(url);
+              if (!res.ok) return fallback;
+              const data = await res.json();
+              return data.name || fallback;
+            } catch { return fallback; }
+          };
+          const [barangayName, cityName, regionName] = await Promise.all([
+            isPsgcCode(raw.barangay)
+              ? fetchName(`https://psgc.gitlab.io/api/barangays/${raw.barangay}/`, raw.barangay)
+              : Promise.resolve(raw.barangay),
+            isPsgcCode(raw.city)
+              ? fetchName(`https://psgc.gitlab.io/api/cities-municipalities/${raw.city}/`, raw.city)
+              : Promise.resolve(raw.city),
+            isPsgcCode(raw.region)
+              ? fetchName(`https://psgc.gitlab.io/api/regions/${raw.region}/`, raw.region)
+              : Promise.resolve(raw.region),
+          ]);
+          this.address = [barangayName, cityName, regionName].filter(Boolean).join(", ");
+        } catch { /* keep existing value on failure */ }
+      }
+    }
   }
 }).mount("#app");
 </script>

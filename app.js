@@ -1,10 +1,10 @@
 window.CocoStore = (() => {
-  const GROUP_NAME = "Green Husk Collective";
+  const GROUP_NAME = "C6C7";
 
   const PRODUCTS = [
     { id: 1, name: "Coco Bag", price: 249, category: "Lifestyle", badge: "New", image: "images/Coco_Bag.jpg", desc: "Eco-friendly utility bag made from coconut coir fibers." },
     { id: 2, name: "Coco Brush", price: 179, category: "Home", badge: "Trending", image: "images/Coco_Brush.jpg", desc: "Durable natural-fiber brush for home and garden cleaning." },
-    { id: 3, name: "Coco Leaf Pot", price: 199, category: "Garden", badge: "Best Seller", image: "images/Coco_Leaf_Pot.jpg", desc: "Biodegradable planting pot ideal for seedlings and decor." },
+    { id: 3, name: "Coco Leaf Mat", price: 199, category: "Garden", badge: "Best Seller", image: "images/Coco_Leaf_Mat.jpg", desc: "Stylish leaf mat ideal for decor." },
     { id: 4, name: "Coco Mat", price: 349, category: "Home", badge: "Best Seller", image: "images/Coco_Mat.jpg", desc: "Natural coir mat that works well as a door or floor mat." },
     { id: 5, name: "Coco Pad", price: 159, category: "Garden", badge: "Popular", image: "images/Coco_Pad.jpg", desc: "Useful liner pad for gardening and moisture support." },
     { id: 6, name: "Coco Pot", price: 219, category: "Garden", badge: "New", image: "images/Coco_Pot.jpg", desc: "Simple coir pot for small indoor or outdoor plants." },
@@ -134,6 +134,24 @@ window.CocoStore = (() => {
     }
   };
 
+  // Redirect to storefront if user is already logged in (for login/signup pages)
+  const redirectIfLoggedIn = (to = "storefront.html") => {
+    if (getCurrentUser()) {
+      window.location.href = to;
+    }
+  };
+
+  // Sanitize a string to prevent XSS when inserting into the DOM
+  const sanitizeHTML = (str) => {
+    if (typeof str !== "string") return "";
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#x27;");
+  };
+
   const pageName = () => location.pathname.split("/").pop() || "index.html";
 
   const setupInteractiveCards = () => {
@@ -175,6 +193,8 @@ window.CocoStore = (() => {
     getTransactions,
     checkout,
     requireAuth,
+    redirectIfLoggedIn,
+    sanitizeHTML,
     pageName,
     setupInteractiveCards
   };
