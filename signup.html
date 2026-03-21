@@ -402,13 +402,13 @@ form.addEventListener('submit', async function(e) {
     try {
         await new Promise(resolve => setTimeout(resolve, 1500));
         
-        const users = JSON.parse(localStorage.getItem('ghc_users') || '[]');
+        const users = JSON.parse(localStorage.getItem('coco_users') || '[]');
         users.push({ ...userData, id: Date.now() });
         localStorage.setItem('ghc_users', JSON.stringify(users));
         
         // Debug log
         console.log('User registered:', userData);
-        console.log('All users:', JSON.parse(localStorage.getItem('ghc_users')));
+        console.log('All users:', JSON.parse(localStorage.getItem('coco_users')));
         
         showMessage('Account created! Please log in to continue.', 'success');
         
