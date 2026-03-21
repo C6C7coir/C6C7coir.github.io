@@ -281,63 +281,64 @@
            ====================== */
 
         const form = document.getElementById('login-form');
-const loginIdInput = document.getElementById('login-id');
-const loginPassInput = document.getElementById('login-pass');
-const loginBtn = document.getElementById('login-btn');
-const messageContainer = document.getElementById('message-container');
-const togglePassBtn = document.getElementById('toggle-pass');
-const togglePassIcon = togglePassBtn.querySelector('i');
+        const loginIdInput = document.getElementById('login-id');
+        const loginPassInput = document.getElementById('login-pass');
+        const loginBtn = document.getElementById('login-btn');
+        const messageContainer = document.getElementById('message-container');
+        const togglePassBtn = document.getElementById('toggle-pass');
+        const togglePassIcon = togglePassBtn.querySelector('i');
 
-// 🔹 Pre-fill email from signup redirect
-document.addEventListener('DOMContentLoaded', function() {
-    const params = new URLSearchParams(window.location.search);
-    const email = params.get('email');
-    if (email) {
-        loginIdInput.value = decodeURIComponent(email);
-        loginPassInput.focus();
-    }
-});
+        // 🔹 Pre-fill email from signup redirect (e.g., login.html?email=user@example.com)
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            const email = params.get('email');
+            if (email) {
+                loginIdInput.value = decodeURIComponent(email);
+                loginPassInput.focus();
+            }
+        });
 
-// 🔹 Toggle password visibility
-togglePassBtn.addEventListener('click', function() {
-    const isPassword = loginPassInput.type === 'password';
-    loginPassInput.type = isPassword ? 'text' : 'password';
-    togglePassIcon.classList.toggle('bi-eye');
-    togglePassIcon.classList.toggle('bi-eye-slash');
-});
+        // 🔹 Toggle password visibility
+        togglePassBtn.addEventListener('click', function() {
+            const isPassword = loginPassInput.type === 'password';
+            loginPassInput.type = isPassword ? 'text' : 'password';
+            togglePassIcon.classList.toggle('bi-eye');
+            togglePassIcon.classList.toggle('bi-eye-slash');
+        });
 
-// 🔹 Show message helper
-function showMessage(text, type) {
-    messageContainer.innerHTML = `<div class="msg msg-${type}">${text}</div>`;
-    if (type === 'success') {
-        setTimeout(() => { messageContainer.innerHTML = ''; }, 3000);
-    }
-}
+        // 🔹 Show message helper
+        function showMessage(text, type) {
+            messageContainer.innerHTML = `<div class="msg msg-${type}">${text}</div>`;
+            if (type === 'success') {
+                setTimeout(() => { messageContainer.innerHTML = ''; }, 3000);
+            }
+        }
 
-// 🔹 Validate login credentials against localStorage
-function authenticateUser(identifier, password) {
-    // Crucial: Use 'coco_users' to match your signup/store logic
-    const users = JSON.parse(localStorage.getItem('coco_users') || '[]');
-    
-    const user = users.find(u => 
-        u.username.toLowerCase() === identifier.toLowerCase() || 
-        u.email.toLowerCase() === identifier.toLowerCase()
-    );
+        // 🔹 Validate login credentials against localStorage (demo only)
+        function authenticateUser(identifier, password) {
+            const users = JSON.parse(localStorage.getItem('coco_users') || '[]');
+            
+            // Search by username OR email (case-insensitive)
+            const user = users.find(u => 
+                u.username.toLowerCase() === identifier.toLowerCase() || 
+                u.email.toLowerCase() === identifier.toLowerCase()
+            );
 
-    if (!user) {
-        return { ok: false, message: 'Account not found. Please sign up first.' };
-    }
+            if (!user) {
+                return { ok: false, message: 'Account not found. Please sign up first.' };
+            }
 
-    if (user.password !== password) {
-        return { ok: false, message: 'Incorrect password. Please try again.' };
-    }
+            if (user.password !== password) {
+                return { ok: false, message: 'Incorrect password. Please try again.' };
+            }
 
-    const { password: _, ...safeUser } = user;
-    return { ok: true, user: safeUser };
-}
+            // ✅ Success: Return user data (exclude password)
+            const { password: _, ...safeUser } = user;
+            return { ok: true, user: safeUser };
+        }
 
-// 🔹 Handle form submission
-form.addEventListener('submit', function(e) {
+        // 🔹 Handle form submission
+        form.addEventListener('submit', function(e) {
     e.preventDefault();
     
     const identifier = loginIdInput.value.trim();
@@ -351,14 +352,14 @@ form.addEventListener('submit', function(e) {
     loginBtn.disabled = true;
     loginBtn.textContent = 'Logging in...';
 
-    // Simulate delay for UX
     setTimeout(() => {
         const result = authenticateUser(identifier, password);
         
         if (result.ok) {
-            // ✅ Use 'coco_session' to match CocoStore.js
+            // ✅ FIX 1: Use 'coco_session' to match CocoStore's KEY_SESSION
             localStorage.setItem('coco_session', JSON.stringify(result.user));
             
+            // Handle "Remember me"
             const rememberMe = document.getElementById('remember-me').checked;
             if (rememberMe) {
                 localStorage.setItem('ghc_remembered_id', identifier);
@@ -373,41 +374,50 @@ form.addEventListener('submit', function(e) {
             }, 1200);
         } else {
             showMessage(result.message, 'error');
-            
-            // Shake animation for errors
-            const container = document.querySelector('.login-container');
-            container.style.animation = 'none';
-            container.offsetHeight; // trigger reflow
-            container.style.animation = 'shake 0.4s ease';
-            
-            if (!document.querySelector('#shake-style')) {
-                const style = document.createElement('style');
-                style.id = 'shake-style';
-                style.textContent = `
-                    @keyframes shake {
-                        0%, 100% { transform: translateX(0); }
-                        25% { transform: translateX(-8px); }
-                        75% { transform: translateX(8px); }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
+            // ... (keep your shake animation code here)
         }
         
         loginBtn.disabled = false;
         loginBtn.textContent = 'Log In';
     }, 600);
 });
+                    
+                    const container = document.querySelector('.login-container');
+                    container.style.animation = 'none';
+                    container.offsetHeight; // Trigger reflow
+                    container.style.animation = 'shake 0.4s ease';
+                    
+                    // Add shake keyframes if not already present
+                    if (!document.querySelector('#shake-style')) {
+                        const style = document.createElement('style');
+                        style.id = 'shake-style';
+                        style.textContent = `
+                            @keyframes shake {
+                                0%, 100% { transform: translateX(0); }
+                                25% { transform: translateX(-8px); }
+                                75% { transform: translateX(8px); }
+                            }
+                        `;
+                        document.head.appendChild(style);
+                    }
+                }
+                
+                // Re-enable button
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Log In';
+                
+            }, 600);
+        });
 
-// 🔹 Load remembered identifier
-document.addEventListener('DOMContentLoaded', function() {
-    const remembered = localStorage.getItem('ghc_remembered_id');
-    if (remembered) {
-        loginIdInput.value = remembered;
-        document.getElementById('remember-me').checked = true;
-        loginPassInput.focus();
-    }
-});
+        // 🔹 Load remembered identifier on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const remembered = localStorage.getItem('ghc_remembered_id');
+            if (remembered) {
+                loginIdInput.value = remembered;
+                document.getElementById('remember-me').checked = true;
+                loginPassInput.focus();
+            }
+        });
     </script>
 </body>
 </html>
