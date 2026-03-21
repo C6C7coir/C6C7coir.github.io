@@ -404,7 +404,7 @@ form.addEventListener('submit', async function(e) {
         
         const users = JSON.parse(localStorage.getItem('coco_users') || '[]');
         users.push({ ...userData, id: Date.now() });
-        localStorage.setItem('ghc_users', JSON.stringify(users));
+        localStorage.setItem('coco_users', JSON.stringify(users));
         
         // Debug log
         console.log('User registered:', userData);
@@ -430,7 +430,7 @@ form.addEventListener('submit', async function(e) {
 document.getElementById('username').addEventListener('blur', async function() {
     const username = this.value.trim();
     if (username.length < 3) return;
-    const users = JSON.parse(localStorage.getItem('ghc_users') || '[]');
+    const users = JSON.parse(localStorage.getItem('coco_users') || '[]');
     const exists = users.some(u => u.username.toLowerCase() === username.toLowerCase());
     if (exists) {
         showMessage('Username is already taken.', 'error');
